@@ -13,7 +13,7 @@ https://badmarket.duckdns.org/mdd/SPY
 * 다운로드 받은 파일 중 `requirements.txt` 파일을 이용하여 필요한 패키지 설치
   * `pip install -r requirements.txt`
 * 파일로 단독 실행하고 싶은 경우
-  * `main.py` 파일 실행
+  * `python main.py` 실행
 * Docker로 실행하고 싶은 경우
   * `docker-compose.yml` 파일이 포함돼 있으므로 `docker-compose up -d` 하면 됨.
 <br><br>
