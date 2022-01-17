@@ -3,6 +3,7 @@
 ## 데모 사이트
 https://badmarket.duckdns.org/mdd/SPY
 <img width="1920" alt="2022-01-17_17-14-43" src="https://user-images.githubusercontent.com/25073589/149732224-b5ef1701-e641-4c09-b7a6-a6d04357b40e.png">
+<img width="1920" alt="2022-01-17_17-40-08" src="https://user-images.githubusercontent.com/25073589/149737461-8a2b50ac-fb91-48a5-b994-0e1a12f60377.png">
 * 관련 프린들 YouTube 영상: https://www.youtube.com/watch?v=k9rtF9uvAdw
 <br><br>
 ## 코드 실행 방법
