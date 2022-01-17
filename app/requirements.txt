@@ -1,0 +1,16 @@
+# for web
+fastapi
+
+# for template
+jinja2
+
+# for server
+uvicorn
+
+# for finance data
+yfinance
+pandas
+pandas-datareader
+
+# for chart
+plotly

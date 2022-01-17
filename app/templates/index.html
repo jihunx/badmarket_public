@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Max, MDD Chart</title>
+</head>
+<body>
+<div class="data-chart" id="chart" style="padding-top: 30px">
+</div>
+</body>
+<script src="https://cdn.plot.ly/plotly-2.6.3.min.js"></script>
+<script>
+    // plotly 스크립트
+    const graphs = {{ graph_json | safe }};
+    const config = {"displayModeBar": false, "responsive": true};
+    Plotly.setPlotConfig(config);
+    Plotly.newPlot('chart', graphs);
+</script>
+</html>

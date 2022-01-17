@@ -1,0 +1,38 @@
+version: '3'
+services:
+  db:
+    container_name: db
+    image: mariadb
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./db:/var/lib/mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=npm
+      - LANG=C.UTF_8
+      - TZ=Asia/Seoul
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+  nginx-proxy-manager:
+    container_name: npm
+    image: jlesage/nginx-proxy-manager
+    ports:
+      - "81:8181"
+      - "80:8080"
+      - "443:4443"
+    volumes:
+      - ./npm:/config:rw
+    restart: always
+
+  app:
+    container_name: app
+    build:
+      context: app
+    ports:
+      - "8000:8000"
+    environment:
+      - TZ=Asia/Seoul
+    volumes:
+      - ./app:/app
+    restart: always
