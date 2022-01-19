@@ -62,13 +62,13 @@ def get_min_value(data):
     return data.loc[:, ["min"]]
 
 
-# Max % 계산: (최고 종가/첫 거래일 종가 - 1) * 100
+# Max % 계산: (최고 종가/첫 거래일 종가 - 1) * 100 -> 소수점 둘째 자리까지
 def get_max_diff(data):
     data["max_diff"] = round((data["max"] / data["first"] - 1) * 100, 2)
     return data
 
 
-# MDD % 계산: (최저 종가/첫 거래일 종가 - 1) * 100 -> 소수점 둘째자리까지
+# MDD % 계산: (최저 종가/첫 거래일 종가 - 1) * 100 -> 소수점 둘째 자리까지
 def get_min_diff(data):
     data["min_diff"] = round((data["min"] / data["first"] - 1) * 100, 2)
     return data
@@ -80,6 +80,31 @@ def get_last_diff(data):
     first_value = get_first_value(data).iloc[-1]["first"]
     last_diff = round((last_value / first_value - 1) * 100, 2)
     return last_diff
+
+
+# 5등분수 계산 및 메시징
+def get_division(data, last_diff):
+    num = data["min_diff"].min()
+    d = [round(num / 5 * i, 2) for i in range(1, 5+1)]
+    if last_diff <= d[4]:
+        step = "#ba181b"
+        msg = "[투자 5단계: 예산의 25%를 레버리지로 투자하세요]"
+    elif last_diff <= d[3]:
+        step = "#ef476f"
+        msg = "[투자 4단계: 예산의 25%를 레버리지로 투자하세요]"
+    elif last_diff <= d[2]:
+        step = "#ffd166"
+        msg = "[투자 3단계: 예산의 25%를 투자하세요]"
+    elif last_diff <= d[1]:
+        step = "#06d6a0"
+        msg = "[투자 2단계: 예산의 12.5%를 투자하세요]"
+    elif last_diff <= d[0]:
+        step = "#118ab2"
+        msg = "[투자 1단계: 예산의 12.5%를 투자하세요]"
+    else:
+        step = "#073b4c"
+        msg = "[투자 0단계: 대기하세요]"
+    return step, msg
 
 
 # 차트 그리기: Bar chart
@@ -106,6 +131,7 @@ def mdd(request: Request, stock_code: str):
     max_diff = get_max_diff(merged_data)
     min_diff = get_min_diff(max_diff)
     last_diff = get_last_diff(original_data)
+    step, msg = get_division(min_diff, last_diff)
     final_data = min_diff.loc[:, ["max_diff", "min_diff"]]
     final_data.rename(columns={"max_diff": "Max%", "min_diff": "MDD%"}, inplace=True)
     fig = go.Figure(
@@ -173,13 +199,13 @@ def mdd(request: Request, stock_code: str):
         ),
         annotations=[
             dict(
-                text=f"가장 마지막 거래일의 DD는 {last_diff}% 입니다.",
+                text=f"가장 마지막 거래일의 DD는 {last_diff}% 입니다. {msg}",
                 x=0.5,
                 y=1.06,
                 xref="paper",
                 yref="paper",
                 showarrow=False,
-                bgcolor="#ff7f0e",
+                bgcolor=step,
                 borderpad=4,
                 font=dict(
                     color="#ffffff"
@@ -206,4 +232,6 @@ if __name__ == "__main__":
     # max_diff = get_max_diff(merged_data)
     # min_diff = get_min_diff(max_diff)
     # last_data = get_last_diff(original_data)
-    # print(last_data)
+    # d = get_division(min_diff, last_data)
+    # print(d)
+    # print(min_diff)
